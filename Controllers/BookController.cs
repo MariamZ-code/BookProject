@@ -31,6 +31,7 @@ namespace BookProject.Controllers
             {
                 var bookDto = new GetBooks
                 {
+                    Id = book.Id,
                     Author = book.Author,
                     Description = book.Description,
                     Genre = book.Genre,
@@ -99,16 +100,16 @@ namespace BookProject.Controllers
 
         #region EditBook
         [HttpPut("EditBook")]
-        public async Task<IActionResult> EditBook(int bookId , Book.Models.Book book)
+        public async Task<IActionResult> EditBook(int Id , Book.Models.Book book)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var bookExists = bookRepo.BookExists(bookId);
+            var bookExists = bookRepo.BookExists(Id);
 
             if (!bookExists)
                 return NotFound(new MessageDto { Message = "Sorry , Book not found" });
 
-            bookRepo.EditBook(book,bookId);
+            bookRepo.EditBook(book, Id);
             bookRepo.Save();
 
             return Ok(new MessageDto { Message = "Updated" });
@@ -133,5 +134,6 @@ namespace BookProject.Controllers
             return Ok(new MessageDto { Message="Deleted"});
         }
         #endregion
+
     }
 }
